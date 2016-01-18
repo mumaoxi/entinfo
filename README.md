@@ -1,8 +1,6 @@
 # Entinfo
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/entinfo`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Rails gem for 创世漫道短信api
 
 ## Installation
 
@@ -22,13 +20,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Initial config
+`config/initializers/entinfo.rb`
 
-## Development
+```ruby
+Entinfo.configure do |config|
+  # 运营商分配给您的SN号(帐号)
+  config.sn = 'SDK-XXX-000-00000'
+  # 运营商分配给您的密码
+  config.pwd = '0-0_0-0'
+end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+### Send message
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+Entinfo.send_sms('15200000000','hello【短信签名】')
+```
 
 ## Contributing
 

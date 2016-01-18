@@ -33,5 +33,19 @@ module Entinfo
       {error: result.body}
     end
   end
-  
+
+  #recieve sms
+ def receive_sms messages
+   messages = Iconv.conv('utf-8', 'gb2312', messages)
+   arr = messages.split(';').collect {|x| x.split(',')}
+   results = []
+   arr.each do |m|
+     message = Hash.new
+     message[:from] = m[2]
+     message[:content] = m[3]
+     message[:time] = Time.parse m[4]
+     results << message
+   end
+   results
+ end
 end

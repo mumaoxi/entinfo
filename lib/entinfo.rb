@@ -26,6 +26,11 @@ module Entinfo
   end
 
   def send_sms(phone, content)
+    unless /^1\d{10}$/ =~ phone.to_s
+      puts "invalid phone:#{phone}"
+      return {error: 'phone valid'}
+    end
+
     result = Net::HTTP.post_form(URI.parse("#{URL}"), sn: @config.sn, pwd: self.pwd, mobile: phone, content: content)
     if result.body.match '^\d{18}$'
       {success: result.body}
@@ -35,17 +40,17 @@ module Entinfo
   end
 
   #recieve sms
- def receive_sms messages
-   messages = Iconv.conv('utf-8', 'gb2312', messages)
-   arr = messages.split(';').collect {|x| x.split(',')}
-   results = []
-   arr.each do |m|
-     message = Hash.new
-     message[:from] = m[2]
-     message[:content] = m[3]
-     message[:time] = Time.parse m[4]
-     results << message
-   end
-   results
- end
+  def receive_sms messages
+    messages = Iconv.conv('utf-8', 'gb2312', messages)
+    arr = messages.split(';').collect { |x| x.split(',') }
+    results = []
+    arr.each do |m|
+      message = Hash.new
+      message[:from] = m[2]
+      message[:content] = m[3]
+      message[:time] = Time.parse m[4]
+      results << message
+    end
+    results
+  end
 end
